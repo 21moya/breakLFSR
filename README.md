@@ -1,5 +1,5 @@
 
-# breakLSFR 🔐⚙️
+# breakLFSR 🔐⚙️
 
 This tool basicaly simulates random number generation using an LFSR (Linear Feedback Shift Register).
 
