@@ -2,8 +2,6 @@ import client.client as c
 import utils.helpers as h
 import time
 
-BIT_LENGTH_24 = 0xFFFFFF
-
 def main():
     inputs = h.handle_inputs()
     HOST = inputs["host"]
@@ -11,12 +9,12 @@ def main():
 
     try:
         data = c.client_connection(HOST, "MC", id, "")
+        seed = int(data["seed"])
+        exp_rand = int(data["rand"])
+        poly = h.create_poly_array(data["poly"])
     except:
         print("error while connecting to the server.")
-
-    seed = int(data["seed"])
-    exp_rand = int(data["rand"])
-    poly = h.create_poly_array(data["poly"])
+        exit(1)
 
     rand = 0
     state = seed
@@ -43,8 +41,13 @@ def main():
         valid = c.client_connection(HOST, "MCV", id, str(counter))
     except:
         print("error while connecting to the server.")
+        exit(1)
 
-    print(f"### {counter} time units. ###\nprocess took {time.time()-start_time:.2f} seconds to complete.") if valid else print("### something went wrong. ###")
+    if valid:
+        print(f"### {counter} time units. ###")
+        print(f"process took {time.time()-start_time:.2f} seconds to complete.") 
+    else:
+        print("something went wrong.")
 
 if __name__ == "__main__":
     main()
